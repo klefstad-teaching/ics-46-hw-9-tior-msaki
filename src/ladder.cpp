@@ -3,11 +3,15 @@
 void error(string word1, string word2, string msg){
     cout << word1 << word2 << msg << endl;
 }
-bool edit_distance_within(const std::string& str1, const std::string& str2, int d);
+bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
+    len_1 = str1.length();
+    len_2 = str2.length();
+    if ((max(len_1, len_2) - min(len_1, len_2)) > d) return false;
+}
 bool is_adjacent(const string& word1, const string& word2){
     len_1 = word1.length();
     len_2 = word2.length();
-    if ((max(len_1, len_2) - min(len_1, len_2)) > 1) return false;
+    if (!edit_distance_within(word1, word2, 1)) return false;
     bool is_one_off = false;
     if (len_1 == len_2) {
         for (size_t index = 0; index<len_1; index++) {
