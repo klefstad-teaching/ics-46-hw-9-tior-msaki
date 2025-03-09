@@ -58,5 +58,7 @@ void load_words(set<string> & word_list, const string& file_name){
         word_list.insert(word);
     in.close();
 }
-void print_word_ladder(const vector<string>& ladder);
+void print_word_ladder(const vector<string>& ladder) {
+    for (auto word: ladder) cout << word << ' ';
+}
 void verify_word_ladder();
