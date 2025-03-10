@@ -7,13 +7,16 @@ void error(string word1, string word2, string msg){
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
     int len_1 = static_cast<int>(str1.length());
     int len_2 = static_cast<int>(str2.length());
-    if ((max(len_1, len_2) - min(len_1, len_2)) > d) return false;
-    return true;
+    if (len_1 == len_2) {
+        // cout<< "HERE";
+        return is_adjacent_equal_len(str1, str2);
+    }
+    return (max(len_1, len_2) - min(len_1, len_2)) > d;
 }
 bool is_adjacent(const string& word1, const string& word2){
     size_t len_1 = word1.length();
     size_t len_2 = word2.length();
-    if (!edit_distance_within(word1, word2, 1)) return false;
+    if ((max(len_1, len_2) - min(len_1, len_2)) > 1) return false;
     if (len_1 == len_2) {
         // cout<< "HERE";
         return is_adjacent_equal_len(word1, word2);
@@ -30,7 +33,7 @@ bool is_adjacent(const string& word1, const string& word2){
         for (size_t index = 0; index<len_2; index++) {
             if (word1[index] != word2[index]) {
                 string new_word = truncate(index, len_1, word1);
-                return new_word == word1;
+                return new_word == word2;
             }
         }
     }
@@ -44,6 +47,7 @@ string truncate(size_t index, const size_t length_word, const string& word){
 }
 
 bool is_adjacent_equal_len(const string& word1, const string& word2){
+    if (word1==word2) return true;
     bool is_one_off = false;
     size_t len_1 = word1.length();
     for (size_t index = 0; index<len_1; index++) {
@@ -86,7 +90,7 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
                     new_ladder.push_back(word);
-                    if (word == end_word) return new_ladder;
+                    if (word == end_word) {cout<< "THISSSS: ";return new_ladder;}
                     ladder_queue.push(new_ladder);
                 }
             }
@@ -102,6 +106,7 @@ void load_words(set<string> & word_list, const string& file_name){
     in.close();
 }
 void print_word_ladder(const vector<string>& ladder) {
+    if (ladder.size()==0) cout<< "No word ladder found.\n";
     for (auto word: ladder) cout << word << ' ';
 }
 void verify_word_ladder() {
