@@ -3,7 +3,7 @@
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous){
     vector<int> distances;
     distances.resize(G.numVertices, INF);
-    distances[source] = 0;
+    // distances[source] = 0;
     priority_queue<Vertex> pq;
 
     for (auto edge : G[source]) {
