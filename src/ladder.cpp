@@ -11,7 +11,24 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
         // cout<< "HERE";
         return is_adjacent_equal_len(str1, str2);
     }
-    return (max(len_1, len_2) - min(len_1, len_2)) <= d;
+    if ((max(len_1, len_2) - min(len_1, len_2)) > d) return false;
+    else if (len_1 < len_2) {
+        for (int index = 0; index<len_1; index++) {
+            if (str1[index] != str2[index]) {
+                string new_word = truncate(index, len_2, str2);
+                return new_word == str1;
+            }
+        }
+    }
+    else {
+        for (int index = 0; index<len_2; index++) {
+            if (str1[index] != str2[index]) {
+                string new_word = truncate(index, len_1, str1);
+                return new_word == str2;
+            }
+        }
+    }
+    return true;
 }
 bool is_adjacent(const string& word1, const string& word2){
     size_t len_1 = word1.length();
@@ -91,13 +108,14 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
                     new_ladder.push_back(word);
-                    if (word == end_word) {cout<< "THISSSS: ";return new_ladder;}
+                    if (word == end_word) {return new_ladder;}
                     ladder_queue.push(new_ladder);
                 }
             }
         }
         ladder_queue.pop();
     }
+    if (ladder.size() == 1) ladder.pop_back();
     return ladder;
 }
 void load_words(set<string> & word_list, const string& file_name){
@@ -107,8 +125,10 @@ void load_words(set<string> & word_list, const string& file_name){
     in.close();
 }
 void print_word_ladder(const vector<string>& ladder) {
-    if (ladder.size()==0) cout<< "No word ladder found.\n";
+    if (ladder.size()<=1) {cout<< "No word ladder found.\n";return;}
+    else cout << "Word ladder found: ";
     for (auto word: ladder) cout << word << ' ';
+    cout<< endl;
 }
 void verify_word_ladder() {
     set<string> word_list;
