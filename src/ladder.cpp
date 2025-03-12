@@ -7,54 +7,24 @@ void error(string word1, string word2, string msg){
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
     int len_1 = static_cast<int>(str1.length());
     int len_2 = static_cast<int>(str2.length());
+    if ((max(len_1, len_2) - min(len_1, len_2)) > d) return false;
     if (len_1 == len_2) {
-        // cout<< "HERE";
         return is_adjacent_equal_len(str1, str2);
     }
-    if ((max(len_1, len_2) - min(len_1, len_2)) > d) return false;
-    else if (len_1 < len_2) {
-        for (int index = 0; index<len_1; index++) {
-            if (str1[index] != str2[index]) {
-                string new_word = truncate(index, len_2, str2);
-                return new_word == str1;
-            }
-        }
-    }
     else {
-        for (int index = 0; index<len_2; index++) {
-            if (str1[index] != str2[index]) {
-                string new_word = truncate(index, len_1, str1);
-                return new_word == str2;
+        string word1 = str1, word2 = str2;
+        if (len_1 > len_2) swap(word1, word2);
+        for (int index = 0; index<len_1; index++) {
+            if (word1[index] != word2[index]) {
+                string new_word = truncate(index, word2.length(), word2);
+                return new_word == word1;
             }
         }
     }
     return true;
 }
 bool is_adjacent(const string& word1, const string& word2){
-    size_t len_1 = word1.length();
-    size_t len_2 = word2.length();
-    if ((max(len_1, len_2) - min(len_1, len_2)) > 1) return false;
-    if (len_1 == len_2) {
-        // cout<< "HERE";
-        return is_adjacent_equal_len(word1, word2);
-    }
-    else if (len_1 < len_2) {
-        for (size_t index = 0; index<len_1; index++) {
-            if (word1[index] != word2[index]) {
-                string new_word = truncate(index, len_2, word2);
-                return new_word == word1;
-            }
-        }
-    }
-    else {
-        for (size_t index = 0; index<len_2; index++) {
-            if (word1[index] != word2[index]) {
-                string new_word = truncate(index, len_1, word1);
-                return new_word == word2;
-            }
-        }
-    }
-    return true;
+    return edit_distance_within(word1, word2, 1);
 }
 
 string truncate(size_t index, const size_t length_word, const string& word){
@@ -87,8 +57,8 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     // all_lower(begin_word, word1);
     // all_lower(end_word, word2);
     vector<string> ladder;
-    if (begin_word == end_word) return ladder;
-    if (word_list.count(end_word) == 0) return ladder;
+    if (begin_word == end_word) return {};
+    if (word_list.count(end_word) == 0) return {};
     queue<vector<string>> ladder_queue;
     ladder_queue.push({begin_word});
     set<string> visited;
