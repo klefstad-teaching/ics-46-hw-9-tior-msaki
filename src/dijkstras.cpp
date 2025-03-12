@@ -5,7 +5,7 @@ vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& prev
     distances.resize(G.numVertices, INF);
     distances[source] = 0;
     int current = source;
-    cout<< "SOURCE: " << source<< " PREVIOUS[SOURCE]: " previous[source] << endl;
+    cout<< "SOURCE: " << source<< " PREVIOUS[SOURCE]: "<< previous[source] << endl;
     priority_queue<Vertex> pq;
     for (auto edge : G[current]) {
         if (distances[edge.dst]> edge.weight) {
