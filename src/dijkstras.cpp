@@ -3,18 +3,23 @@
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous){
     vector<int> distances;
     distances.resize(G.numVertices, INF);
-    distances[source] = 0;
+    distances[source] = 0; previous[source] = source;
     int current = source;
-    cout<< "SOURCE: " << source<< " PREVIOUS[SOURCE]: "<< previous[source] << endl;
-    priority_queue<Vertex> pq;
-    for (auto edge : G[current]) {
-        if (distances[edge.dst]> edge.weight) {
-            distances[edge.dst] = edge.weight;
-            pq.push(Vertex(edge.dst, distances[edge.dst]));
-            }
+    // cout<< "SOURCE: " << source<< " PREVIOUS[SOURCE]: "<< previous[source] << endl;
+    for (int i = 0; i<G.numVertices; i++){
+        priority_queue<Vertex> pq;
+        for (auto edge : G[current]) {
+            if (distances[edge.dst]> edge.weight) {
+                distances[edge.dst] = edge.weight;
+                pq.push(Vertex(edge.dst, distances[edge.dst]));
+                }
+        }
+        if (pq.empty()){
+            return distances;
+        }
+        previous[pq.top().vertex] = current;
+        current = pq.top().vertex;
     }
-    previous[pq.top().vertex] = current;
-
     return distances;
 }
 vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination){
