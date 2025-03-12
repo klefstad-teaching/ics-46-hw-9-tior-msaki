@@ -53,9 +53,6 @@ void all_lower(const string& word1, string & replace){
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
-    // string word1, word2;
-    // all_lower(begin_word, word1);
-    // all_lower(end_word, word2);
     vector<string> ladder;
     if (begin_word == end_word) return {};
     if (word_list.count(end_word) == 0) return {};
@@ -66,14 +63,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     string last_word, replace;
     while (!ladder_queue.empty()) {
         ladder = ladder_queue.front();
-        // last_word = ladder.back();
-        all_lower(ladder.back(), last_word);
-        // cout << ladder.back()<<endl; 
+        last_word = ladder.back();
+        // all_lower(ladder.back(), last_word);
         for (string word: word_list){
-            // cout << word << " ";
-            all_lower(word, replace);
-            if (is_adjacent(last_word, replace)){
-                // cout << "YES " << word << endl;
+            // all_lower(word, replace);
+            if (is_adjacent(last_word, word)){
+            // if (is_adjacent(last_word, replace)){
                 if (visited.count(word) == 0) {
                     visited.insert(word);
                     vector<string> new_ladder = ladder;
